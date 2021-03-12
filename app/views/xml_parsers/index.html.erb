@@ -1,0 +1,12 @@
+<%=form_tag('/upload-xml', method: 'post', multipart: true) do %>
+    <%= file_field_tag :file %>
+    <div class='submit-btn'>
+        <%= submit_tag 'Submit' %>
+    </div>
+<% end %>
+
+<style>
+    .submit-btn {
+        margin-top: 10px;
+    }
+</style>
