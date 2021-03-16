@@ -1,5 +1,5 @@
 module ApplicationHelper
-  ELEMENTS_TO_COMPUTE_COMPUTE = %w(R8 R9 R10 R11 R12 R13 R14 R15 R16 R17 R18)
+  ELEMENTS_TO_COMPUTE = %w(R8 R9 R10 R11 R12 R13 R14 R15 R16 R17 R18)
 
   class << self
     def generete_data_for_parsed_file(arr)
@@ -7,7 +7,7 @@ module ApplicationHelper
       grouped_data(arr).map do |a|
         a.flatten.reduce do |acc,h|
           acc.merge(h) do |key, v1, v2|
-            ELEMENTS_TO_COMPUTE_COMPUTE.include?(key) ? v1.to_f + v2.to_f : v2
+            ELEMENTS_TO_COMPUTE.include?(key) ? v1.to_f + v2.to_f : v2
           end
         end
       end
