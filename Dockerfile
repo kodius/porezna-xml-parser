@@ -7,7 +7,7 @@ RUN mkdir /app
 WORKDIR /app
 COPY Gemfile /app/Gemfile
 COPY Gemfile.lock /app/Gemfile.lock
-RUN bundle config --global frozen 1 && bundle config set without 'development test' && bundle install
+RUN bundle config --global frozen 1 && bundle install
 COPY . /app
 RUN bundle exec rake assets:precompile
 
