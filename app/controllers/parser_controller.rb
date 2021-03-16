@@ -1,4 +1,4 @@
-class XmlParsersController < ActionController::Base
+class ParserController < ActionController::Base
   def index; end
 
   def upload

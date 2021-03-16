@@ -15,7 +15,7 @@ class NokogiriServices
        end
        arr << h
      end
-     ApplicationHelper.reduce_same_keys(arr)
+     ApplicationHelper.generete_data_for_parsed_file(arr)
    end
 
    def self.finish_xml_parsing(reduced_array)
