@@ -7,7 +7,7 @@ module ApplicationHelper
       grouped_data(arr).map do |a|
         a.flatten.reduce do |acc,h|
           acc.merge(h) do |key, v1, v2|
-            ELEMENTS_TO_COMPUTE.include?(key) ? v1.to_f + v2.to_f : v2
+            ELEMENTS_TO_COMPUTE.include?(key) ? transform_string_to_money_and_sum(v1, v2) : v2
           end
         end
       end
@@ -19,6 +19,11 @@ module ApplicationHelper
 
     def grouped_data(input)
       input.group_by {|g| [g["R2"], g["R3"], g["R7"]] }.values
+    end
+
+    def transform_string_to_money_and_sum(total1, total2)
+      sum_money =  Monetize.parse(total1) + Monetize.parse(total2)
+      sum_money.to_money.format(symbol:nil, thousands_separator: '')
     end
   end
 end
