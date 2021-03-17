@@ -21,7 +21,7 @@ class NokogiriServices
    def self.finish_xml_parsing(reduced_array)
      @doc.search('Racuni').remove
      @doc.at('Tijelo').prepend_child "<Racuni></Racuni>"
-     reduced_array.each_with_index do |h, index|
+     reduced_array.sort_by { |hsh| hsh['R3']}.each_with_index do |h, index|
        string = "<R1>#{index + 1}</R1>" + h.map {|key,value| "<#{key}>#{value}</#{key}>" }.join('')
        @doc.at('Racuni').add_child "<R>#{string}</R>"
      end
