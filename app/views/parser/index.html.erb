@@ -1,3 +1,7 @@
+<head>
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
 <%=form_tag('/upload-xml', method: 'post', multipart: true) do %>
 <h1> KODIUS 6</h1>
     <%= file_field_tag :file %>
@@ -5,9 +9,3 @@
         <%= submit_tag 'Submit' %>
     </div>
 <% end %>
-
-<style>
-    .submit-btn {
-        margin-top: 10px;
-    }
-</style>
