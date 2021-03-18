@@ -2,12 +2,12 @@ FROM ruby:2.7.1
 
 RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends  && apt-get install npm  -yqq && npm install -g yarn
 
-RUN gem install bundler -v 2.1.4 
+RUN gem install bundler -v 2.1.4
 RUN mkdir /app
 WORKDIR /app
 COPY Gemfile /app/Gemfile
 COPY Gemfile.lock /app/Gemfile.lock
-RUN bundle config --global frozen 1 && bundle install
+RUN bundle config --global frozen 1 && bundle install && bundle exec rake webpacker:install
 COPY . /app
 RUN bundle exec rake assets:precompile
 
