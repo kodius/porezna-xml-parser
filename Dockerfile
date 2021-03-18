@@ -9,7 +9,7 @@ COPY Gemfile /app/Gemfile
 COPY Gemfile.lock /app/Gemfile.lock
 RUN bundle config --global frozen 1 && bundle install
 COPY . /app
-RUN yarn install &&  bundle exec rails webpacker:compile && bundle exec rake assets:precompile
+RUN ./bin/webpack && yarn install &&  bundle exec rails webpacker:compile && bundle exec rake assets:precompile
 
 # Add a script to be executed every time the container starts.
 COPY entrypoint.sh /usr/bin/
