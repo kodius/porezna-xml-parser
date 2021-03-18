@@ -1,8 +1,3 @@
-<head>
-  <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= stylesheet_pack_tag 'drag_and_drop', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-</head>
 
 <%=form_tag('/upload-xml', method: 'post', multipart: true, class: 'uploader', id: 'file-upload-form') do %>
   <input id="file-upload" type="file" name="fileUpload" accept="image/*" />

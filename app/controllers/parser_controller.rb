@@ -1,4 +1,4 @@
-class ParserController < ActionController::Base
+class ParserController < ApplicationController
   def index; end
 
   def upload
@@ -7,13 +7,13 @@ class ParserController < ActionController::Base
     send_data(
       doc.to_xml,
       filename: filename,
-      type: "text/xml"
+      type: "text/xml",
     )
   end
 
   private
 
   def filename
-    "#{params[:file].original_filename.sub(/\.[^.]+\z/, '')}_kodius.xml"
+    "#{params[:file].original_filename.sub(/\.[^.]+\z/, "")}_kodius.xml"
   end
 end
