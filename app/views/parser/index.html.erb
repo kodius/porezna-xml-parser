@@ -1,11 +1,28 @@
 <head>
-    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= stylesheet_pack_tag 'drag_and_drop', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 </head>
-<%=form_tag('/upload-xml', method: 'post', multipart: true) do %>
-<h1> KODIUS 6</h1>
-    <%= file_field_tag :file %>
-    <div class='submit-btn'>
-        <%= submit_tag 'Submit' %>
+
+<%=form_tag('/upload-xml', method: 'post', multipart: true, class: 'uploader', id: 'file-upload-form') do %>
+  <input id="file-upload" type="file" name="fileUpload" accept="image/*" />
+  <label for="file-upload" id="file-drag">
+    <img id="file-image" src="#" alt="Preview" class="hidden">
+      <div id="start">
+        <i class="fa fa-download" aria-hidden="true"></i>
+      <div>Select a file or drag here</div>
+      <div id="notimage" class="hidden">Please select an image</div>
+        <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
+      </div>
+      <div id="response" class="hidden">
+      <div id="messages"></div>
+      <progress class="progress" id="file-progress" value="0">
+        <span>0</span>%
+      </progress>
     </div>
+  </label>
+  <%= file_field_tag :file %>
+  <div class='submit-btn'>
+      <%= submit_tag 'Submit' %>
+  </div>
 <% end %>
