@@ -7,7 +7,8 @@ RUN mkdir /app
 WORKDIR /app
 COPY Gemfile /app/Gemfile
 COPY Gemfile.lock /app/Gemfile.lock
-RUN bundle config --global frozen 1 && bundle install && bundle exec rake webpacker:install
+RUN bundle config --global frozen 1 && bundle install
+RUN bundle exec rake webpacker:install
 COPY . /app
 RUN bundle exec rake assets:precompile
 
