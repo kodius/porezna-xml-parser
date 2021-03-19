@@ -1,6 +1,14 @@
 FROM ruby:2.7.1
 
-RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends  && apt-get install npm  -yqq && npm install -g yarn
+RUN apt-get update -yqq \
+    && apt-get install curl gnupg -yq \
+    && curl -sL https://deb.nodesource.com/setup_15.x | bash \
+    && apt-get install nodejs -yq  \
+    && apt-get install -yqq --no-install-recommends  \
+    vim \
+    build-essential \
+    ruby-dev \ 
+    && npm install -g yarn
 
 RUN gem install bundler -v 2.1.4
 RUN mkdir /app
@@ -9,7 +17,7 @@ COPY Gemfile /app/Gemfile
 COPY Gemfile.lock /app/Gemfile.lock
 RUN bundle config --global frozen 1 && bundle install
 COPY . /app
-RUN NODE_ENV=production RAILS_ENV=production bundle exec rake assets:precompile
+RUN bundle exec rake assets:precompile
 
 # Add a script to be executed every time the container starts.
 COPY entrypoint.sh /usr/bin/
