@@ -8,10 +8,10 @@ RUN apt-get update -yqq \
     vim \
     build-essential \
     ruby-dev \ 
-    && npm install -g yarn
+    && npm install -g yarn \
+    && gem install bundler -v 2.1.4 \
+    && mdir /app
 
-RUN gem install bundler -v 2.1.4
-RUN mkdir /app
 WORKDIR /app
 COPY Gemfile /app/Gemfile
 COPY Gemfile.lock /app/Gemfile.lock
