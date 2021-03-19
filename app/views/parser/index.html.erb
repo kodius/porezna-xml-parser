@@ -1,23 +1,19 @@
-
 <%=form_tag('/upload-xml', method: 'post', multipart: true, class: 'uploader', id: 'file-upload-form') do %>
-  <input id="file-upload" type="file" name="fileUpload" accept="image/*" />
+  <input id="file-upload" type="file" name="fileUpload" multiple />
   <label for="file-upload" id="file-drag">
-    <img id="file-image" src="#" alt="Preview" class="hidden">
-      <div id="start">
-        <i class="fa fa-download" aria-hidden="true"></i>
+    <div id="start">
+      <i class="fa fa-download" aria-hidden="true"></i>
       <div>Select a file or drag here</div>
-      <div id="notimage" class="hidden">Please select an image</div>
-        <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
-      </div>
-      <div id="response" class="hidden">
-      <div id="messages"></div>
+      <div id="notimage" class="hidden"></div>
+    </div>
+    <div id="response" class="hidden">
       <progress class="progress" id="file-progress" value="0">
         <span>0</span>%
       </progress>
     </div>
   </label>
-  <%= file_field_tag :file %>
   <div class='submit-btn'>
-      <%= submit_tag 'Submit' %>
+      <%= submit_tag 'Submit', id:'submit-button' %>
   </div>
+  <div id='file-list-display'></div>
 <% end %>
