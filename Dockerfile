@@ -7,10 +7,10 @@ RUN apt-get update -yqq \
     && apt-get install -yqq --no-install-recommends  \
     vim \
     build-essential \
-    ruby-dev \ 
+    ruby-dev \
     && npm install -g yarn \
     && gem install bundler -v 2.1.4 \
-    && mdir /app
+    && mkdir /app
 
 WORKDIR /app
 COPY Gemfile /app/Gemfile
