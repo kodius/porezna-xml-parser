@@ -2,7 +2,7 @@ FROM ruby:2.7.1
 
 RUN apt-get update -yqq \
     && apt-get install curl gnupg -yq \
-    && curl -sL https://deb.nodesource.com/setup_15.x | bash \
+    && curl -sL https://deb.nodesource.com/setup_14.x | bash \
     && apt-get install nodejs -yq  \
     && apt-get install -yqq --no-install-recommends  \
     vim \
