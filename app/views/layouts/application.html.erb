@@ -23,7 +23,7 @@ function ekUpload(){
       var fileList = [];
       var fileSelect    = document.getElementById('file-upload'),
           fileDrag      = document.getElementById('file-drag'),
-          submitButton  = document.getElementById('submit-button');
+          submitButton  = document.getElementById('file-upload-form');
           fileListDisplay = document.getElementById('file-list-display');
 
       fileSelect.addEventListener('change', fileSelectHandler.bind(null, fileList), false);
@@ -35,7 +35,7 @@ function ekUpload(){
         fileDrag.addEventListener('dragover', fileDragHover, false);
         fileDrag.addEventListener('dragleave', fileDragHover, false);
         fileDrag.addEventListener('drop', fileSelectHandler.bind(null, fileList), false);
-        submitButton.addEventListener('click', uploadFile.bind(null,fileList) )
+        submitButton.addEventListener('submit', prepareUploadFiles.bind(null,fileList), false)
       }
     }
 
@@ -51,6 +51,8 @@ function ekUpload(){
     function fileSelectHandler(fileList, e) {
       // Fetch FileList object
       var files = e.target.files || e.dataTransfer.files;
+      var fileSelect    = document.getElementById('file-upload')
+      fileSelect.files = files;
       // Cancel event and hover styling
       fileDragHover(e);
 
@@ -109,11 +111,22 @@ function ekUpload(){
       }
     }
 
-    function uploadFile(files) {
-      var xhr = new XMLHttpRequest(),
-        fileInput = document.getElementById('class-roster-file'),
-        pBar = document.getElementById('file-progress'),
-        fileSizeLimit = 1024; // In MB
+    function prepareUploadFiles(files, evnt) {
+      // evnt.preventDefault();
+      files.forEach(function (file) {
+        debugger;
+        uploadFile(file);
+      });
+    }
+
+    function uploadFile(file) {
+      console.log('wwwwwwwww')
+      var xhr = new XMLHttpRequest();
+      var formData = new FormData();
+      formData.append('fileUpload', file);
+      //  var data = new FormData()
+      // formData.append('fileUpload[]', file)
+
       if (xhr.upload) {
         // Check if file is less than x MB
         if (true) {
@@ -125,6 +138,7 @@ function ekUpload(){
           // File received / failed
           xhr.onreadystatechange = function(e) {
             if (xhr.readyState == 4) {
+              console.log(xhr.status)
               // Everything is good!
 
               // progress.className = (xhr.status == 200 ? "success" : "failure");
@@ -132,12 +146,11 @@ function ekUpload(){
             }
           };
 
-          // Start upload
           xhr.open('POST', document.getElementById('file-upload-form').action, true);
-          // xhr.setRequestHeader('X-File-Name', file.name);
-          // xhr.setRequestHeader('X-File-Size', file.size);
-          xhr.setRequestHeader('Content-Type', 'multipart/form-data');
-          xhr.send(files);
+          xhr.setRequestHeader('X-File-Name', file.name);
+          xhr.setRequestHeader('X-File-Size', file.size);
+          // xhr.setRequestHeader('Content-Type', 'multipart/form-data');
+          xhr.send(formData)
         } else {
           output('Please upload a smaller file (< ' + fileSizeLimit + ' MB).');
         }
