@@ -2,7 +2,8 @@ class ParserController < ApplicationController
   def index; end
 
   def upload
-    read_xml = params[:fileUpload].read
+    byebug
+    read_xml = params[:file].read
     doc = NokogiriServices.call(read_xml)
     send_data(
       doc.to_xml,
