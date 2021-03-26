@@ -50,14 +50,19 @@ export default class extends Controller {
       file.controller && file.controller.xhr.abort();
     });
 
-    this.dropZone.on('sending', function(file, xhr, formData) {
-        // Append all form inputs to the formData Dropzone will POST
-        console.log('malo')
-        // var data = $('#frmTarget').serializeArray();
-        // $.each(data, function(key, el) {
-        //     formData.append(el.name, el.value);
-        // });
-    });
+    this.dropZone.on('success', function(file, response){
+      // file.previewElement.onclick = function() {
+      //   alert(1);//do download
+      // }
+      var kita = document.getElementById('download')
+      kita.setAttribute('download', 'kita');
+      kita.setAttribute('href', 'data:xml/plain;' + response)
+      kita.click();
+      // var xmlHttp = new XMLHttpRequest();
+      // xmlHttp.open( "GET", theUrl, false );
+      console.log(file)
+      console.log(response)
+    })
 }
 
   get headers() {
@@ -167,14 +172,17 @@ function createDropZone(controller) {
     url: '/upload-xml',
     headers: controller.headers,
     maxFiles: 2,
+    uploadMultiple: true,
+    parallelUploads: 1,
     autoProcessQueue: false,
     maxFilesize: controller.maxFileSize,
     init: function() {
         var myDropzone = this;
-        document.getElementById('submit-button').addEventListener("click", function (e) {
+        document.getElementById('file-upload-form').addEventListener("submit", function (e) {
             console.log('sasasassasasad2321a');
             e.preventDefault();
             myDropzone.processQueue();
+            this.remove();
         });
     }
   });
