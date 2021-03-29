@@ -55,7 +55,7 @@ export default class extends Controller {
     // });
 
     this.dropZone.on("success", function(file, responseText) {
-      this.options.params.push(responseText["filename"])
+      window.location.href = '/download-xml?filename='+responseText["filename"];
     });
 }
 
@@ -175,20 +175,22 @@ function createDropZone(controller) {
     maxFilesize: controller.maxFileSize,
     params: controller.listOfUploadFiles,
     addRemoveLinks: true,
+    autoProcessQueue: false,
     init: function() {
         var myDropzone = this;
         document.getElementById('file-upload-form').addEventListener("submit", function (e) {
             e.preventDefault();
-            myDropzone.options.params.forEach(function(item,index) {
-              setTimeout(function() {
-                console.log(item);
-                window.location.href = '/download-xml?filename='+item;
-              }, 500*(index+1))
-            });
-        });
-
-        document.getElementById('upload-zone').addEventListener("drop", function (e) {
-          e.preventDefault();
+            if(myDropzone.getQueuedFiles().length === 0)
+            {
+                alert("Please drop or select file to upload !!!");
+            }
+            else {
+              myDropzone.getQueuedFiles().forEach(function(file,index) {
+                setTimeout(function() {
+                  myDropzone.processQueue(file)
+                }, 5000*(index+1))
+              });
+            }
         });
     }
   });
