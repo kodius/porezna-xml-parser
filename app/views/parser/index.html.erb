@@ -1,7 +1,7 @@
 <%=form_tag('/upload-xml', method: 'post', multipart: true, class: 'uploader', id: 'file-upload-form') do %>
     <%= label_tag :fileUpload, nil, class: "label" %>
-    <div class="dropzone dropzone-default dz-clickable" data-controller="parser" data-dropzone-max-file-size="2" data-dropzone-max-files="2">
-      <%= file_field_tag :fileUpload, multiple: true, data: { target: 'parser.input' } %>
+    <div id='upload-zone' class="dropzone dropzone-default dz-clickable" data-controller="parser" data-dropzone-max-file-size="2" data-dropzone-max-files="2">
+      <%= file_field_tag :fileUpload, data: { target: 'parser.input' } %>
       <div class="dropzone-msg dz-message needsclick text-gray-600">
         <h3 class="dropzone-msg-title">Drag here to upload or click here to browse</h3>
         <span class="dropzone-msg-desc text-sm">2 MB file size maximum. Allowed file types png, jpg.</span>
@@ -11,5 +11,4 @@
       <%= submit_tag 'Submit', id:'submit-button' %>
     </div>
   <div id='file-list-display'></div>
-   <a id="download" download="" href="">download</a>
 <% end %>

@@ -17,7 +17,6 @@ import {
   removeElement,
   insertAfter
 } from "helpers";
-
 export default class extends Controller {
   static targets = ["input"];
 
@@ -50,19 +49,14 @@ export default class extends Controller {
       file.controller && file.controller.xhr.abort();
     });
 
-    this.dropZone.on('success', function(file, response){
-      // file.previewElement.onclick = function() {
-      //   alert(1);//do download
-      // }
-      var kita = document.getElementById('download')
-      kita.setAttribute('download', 'kita');
-      kita.setAttribute('href', 'data:xml/plain;' + response)
-      kita.click();
-      // var xmlHttp = new XMLHttpRequest();
-      // xmlHttp.open( "GET", theUrl, false );
-      console.log(file)
-      console.log(response)
-    })
+    // this.dropZone.on('sending', function(file, xhr, formData){
+    //   debugger;
+    //   formData.append('userName', 'bob');
+    // });
+
+    this.dropZone.on("success", function(file, responseText) {
+      this.options.params.push(responseText["filename"])
+    });
 }
 
   get headers() {
@@ -87,6 +81,11 @@ export default class extends Controller {
 
   get addRemoveLinks() {
     return this.data.get("addRemoveLinks") || true;
+  }
+
+  get listOfUploadFiles() {
+    this.data.listOfUploadFiles = []
+    return this.data.listOfUploadFiles;
   }
 }
 
@@ -170,19 +169,26 @@ function createDirectUploadController(source, file) {
 function createDropZone(controller) {
   return new Dropzone(controller.element, {
     url: '/upload-xml',
-    headers: controller.headers,
-    maxFiles: 2,
+    maxFiles: 10,
     uploadMultiple: true,
     parallelUploads: 1,
-    autoProcessQueue: false,
     maxFilesize: controller.maxFileSize,
+    params: controller.listOfUploadFiles,
+    addRemoveLinks: true,
     init: function() {
         var myDropzone = this;
         document.getElementById('file-upload-form').addEventListener("submit", function (e) {
-            console.log('sasasassasasad2321a');
             e.preventDefault();
-            myDropzone.processQueue();
-            this.remove();
+            myDropzone.options.params.forEach(function(item,index) {
+              setTimeout(function() {
+                console.log(item);
+                window.location.href = '/download-xml?filename='+item;
+              }, 500*(index+1))
+            });
+        });
+
+        document.getElementById('upload-zone').addEventListener("drop", function (e) {
+          e.preventDefault();
         });
     }
   });
