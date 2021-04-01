@@ -15,12 +15,21 @@ import {
   toArray,
   findElement,
   removeElement,
-  insertAfter
+  insertAfter,
+  addFileToTheList,
+  addWrongFormatError,
+  getFilenameExtension,
+  addStatusIcon
+
 } from "helpers";
 export default class extends Controller {
   static targets = ["input"];
 
   connect() {
+    this.sendBtn = document.getElementById('submit-button');
+    this.removeFileBtn = document.querySelectorAll('.remove-icon-span')
+    this.listOfAcceptedFiles = [];
+    this.filedSlots = document.querySelectorAll('filed-file-slot')
     this.dropZone = createDropZone(this);
     this.hideFileInput();
     this.bindEvents();
@@ -36,12 +45,19 @@ export default class extends Controller {
 
   bindEvents() {
     this.dropZone.on("addedfile", file => {
-      setTimeout(() => {
-        file.accepted
-      }, 500);
+      let fileExtenstion = getFilenameExtension(file.name)
+      if(fileExtenstion === 'xml') {
+        this.listOfAcceptedFiles.push(file.name);
+        this.sendBtn.classList += ' enabled-btn'
+        this.sendBtn.disabled = false;
+        addFileToTheList(this.listOfAcceptedFiles)
+      } else {
+        addWrongFormatError();
+      }
     });
 
     this.dropZone.on("removedfile", file => {
+      console.log('jesam')
       file.controller && removeElement(file.controller.hiddenInput);
     });
 
@@ -49,14 +65,36 @@ export default class extends Controller {
       file.controller && file.controller.xhr.abort();
     });
 
+    for(let remove of this.removeFileBtn) {
+      if(remove === undefined)  {
+        return;
+      }
+    }
+    // this.dropZone.on('drop', (file, event) => {
+    //   debugger;
+    // });
+
+    // this.dropZone.on('error', (file, message, xhr) => {
+    //   debugger;
+    //   addWrongFormatError()
+    // });
+
+
     // this.dropZone.on('sending', function(file, xhr, formData){
     //   debugger;
     //   formData.append('userName', 'bob');
     // });
 
-    this.dropZone.on("success", function(file, responseText) {
-      window.location.href = '/download-xml?filename='+responseText["filename"];
+    this.dropZone.on("success", function(file, response) {
+      console.log(response)
+      console.log(response['status'])
+      if(response['status'] === 200) {
+        window.location.href = '/download-xml?filename='+response["filename"];
+      }
+      addStatusIcon(response['status'])
     });
+
+    this
 }
 
   get headers() {
@@ -87,6 +125,11 @@ export default class extends Controller {
     this.data.listOfUploadFiles = []
     return this.data.listOfUploadFiles;
   }
+
+  get listOfUploadFiles() {
+    this.data.listOfUploadFiles = []
+    return this.data.listOfUploadFiles;
+  }
 }
 
 // class DirectUploadController {
@@ -96,19 +139,19 @@ export default class extends Controller {
 //     this.file = file;
 //   }
 
-//   start() {
-//     this.file.controller = this;
-//     this.hiddenInput = this.createHiddenInput();
-//     this.directUpload.create((error, attributes) => {
-//       if (error) {
-//         removeElement(this.hiddenInput);
-//         this.emitDropzoneError(error);
-//       } else {
-//         this.hiddenInput.value = attributes.signed_id;
-//         this.emitDropzoneSuccess();
-//       }
-//     });
-//   }
+  // start() {
+  //   this.file.controller = this;
+  //   this.hiddenInput = this.createHiddenInput();
+  //   this.directUpload.create((error, attributes) => {
+  //     if (error) {
+  //       removeElement(this.hiddenInput);
+  //       this.emitDropzoneError(error);
+  //     } else {
+  //       this.hiddenInput.value = attributes.signed_id;
+  //       this.emitDropzoneSuccess();
+  //     }
+  //   });
+  // }
 
 //   createHiddenInput() {
 //     const input = document.createElement("input");
@@ -145,11 +188,11 @@ export default class extends Controller {
 //     this.source.dropZone.emit("processing", this.file);
 //   }
 
-//   emitDropzoneError(error) {
-//     this.file.status = Dropzone.ERROR;
-//     this.source.dropZone.emit("error", this.file, error);
-//     this.source.dropZone.emit("complete", this.file);
-//   }
+  // emitDropzoneError(error) {
+  //   this.file.status = Dropzone.ERROR;
+  //   this.source.dropZone.emit("error", this.file, error);
+  //   this.source.dropZone.emit("complete", this.file);
+  // }
 
 //   emitDropzoneSuccess() {
 //     this.file.status = Dropzone.SUCCESS;
@@ -162,10 +205,6 @@ function createDirectUploadController(source, file) {
   return new DirectUploadController(source, file);
 }
 
-// function createDirectUpload(file, url, controller) {
-//   return new DirectUpload(file, url, controller);
-// }
-
 function createDropZone(controller) {
   return new Dropzone(controller.element, {
     url: '/upload-xml',
@@ -176,6 +215,9 @@ function createDropZone(controller) {
     params: controller.listOfUploadFiles,
     addRemoveLinks: true,
     autoProcessQueue: false,
+    acceptedFiles: '.xml',
+    previewsContainer: false,
+    params: controller.listOfUploadFiles,
     init: function() {
         var myDropzone = this;
         document.getElementById('file-upload-form').addEventListener("submit", function (e) {

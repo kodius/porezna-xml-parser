@@ -1,0 +1,41 @@
+#file-list-display {
+  margin-top: 50px;
+}
+
+.slots-row {
+  display: flex;
+  justify-content: center;
+}
+
+.remove-icon-span {
+  display: none;
+}
+
+.file-slot {
+  width: 102px;
+  height: 123px;
+  margin-right: 2px;
+  text-align: center;
+  white-space: nowrap;
+  box-sizing: content-box;
+  position: relative;
+  img {
+    display: inline-block;
+    vertical-align: middle;
+    padding-top: 40%;
+  }
+}
+
+.filed-file-slot:hover {
+  background: #F3F3F3;
+  border-radius: 10px;
+  // opacity: 0.4;
+  .remove-icon-span {
+    position: absolute;
+    top: 2px;
+    right: 10px;
+    z-index: 100;
+    display: inline;
+    padding: 0;
+  }
+}

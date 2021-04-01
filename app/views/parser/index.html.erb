@@ -1,14 +1,63 @@
-<%=form_tag('/upload-xml', method: 'post', multipart: true, class: 'uploader', id: 'file-upload-form') do %>
-    <%= label_tag :fileUpload, nil, class: "label" %>
+<div class='form-wrapper'>
+  <%= form_tag('/upload-xml', method: 'post', multipart: true, id: 'file-upload-form') do %>
     <div id='upload-zone' class="dropzone dropzone-default dz-clickable" data-controller="parser" data-dropzone-max-file-size="2" data-dropzone-max-files="2">
-      <%= file_field_tag :fileUpload, data: { target: 'parser.input' } %>
+      <%= file_field_tag :fileUpload, data: { target: 'parser.input' }, class: 'hidden-input' %>
       <div class="dropzone-msg dz-message needsclick text-gray-600">
-        <h3 class="dropzone-msg-title">Drag here to upload or click here to browse</h3>
-        <span class="dropzone-msg-desc text-sm">2 MB file size maximum. Allowed file types png, jpg.</span>
+        <div class='cloud-icon-wrapper'><%= image_tag 'cloud-icon.png', class: 'cloud-icon' %></div>
+        <p class='dropzone-msg'>Dovucite datoteku ili <span>Odaberite</span></p>
       </div>
     </div>
+    <p class='max-file-warning'>Mozete obraditi najvise 10 .xml datoteka po sesiji.</p>
     <div class='submit-btn'>
-      <%= submit_tag 'Submit', id:'submit-button' %>
+      <%= submit_tag 'Obradi datoteke', id:'submit-button', class: 'disabled-btn', disabled: true %>
     </div>
-  <div id='file-list-display'></div>
-<% end %>
+  <% end %>
+</div>
+
+<div id='file-list-display'>
+  <div class='slots-row'>
+    <div class='file-slot' data-dz-remove>
+      <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
+      <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
+    </div>
+    <div class='file-slot'>
+      <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
+      <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
+    </div>
+    <div class='file-slot'>
+      <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
+      <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
+    </div>
+    <div class='file-slot'>
+      <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
+      <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
+    </div>
+    <div class='file-slot'>
+      <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
+      <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
+    </div>
+  </div>
+  <div class='slots-row'>
+    <div class='slots-row'>
+      <div class='file-slot'>
+        <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
+        <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
+      </div>
+      <div class='file-slot'>
+        <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
+        <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
+      </div>
+      <div class='file-slot'>
+        <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
+        <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
+      </div>
+      <div class='file-slot'>
+        <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
+        <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
+      </div>
+      <div class='file-slot'>
+        <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
+        <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
+      </div>
+  </div>
+</div>
