@@ -65,6 +65,7 @@ export function returnToInitial(element) {
   element.classList.remove('filed-file-slot');
   element.querySelector('.empty-slot-img').src = '/assets/empty-slot.png'
   element.querySelector('.element-name').remove();
+  element.removeAttribute('data-uuid');
   var availableSlots = document.querySelectorAll(".file-slot:not(.filed-file-slot)");
   for(let availableSlot of availableSlots) {
     availableSlot.className = availableSlot.className.replace(/first/g, "");
@@ -105,6 +106,27 @@ export function addErroMsg(msg) {
 export function hideErrorMsg() {
   document.getElementById('error-container').style.display = 'none';
   document.getElementById('error-container2').style.display = 'none';;
+}
+
+export function sortList() {
+  var parent = document.querySelectorAll('.slots-row');
+  var files = document.querySelectorAll('.file-slot');
+  var fileSlotArray = Array.prototype.slice.call(files, 0);
+  fileSlotArray = fileSlotArray.sort(function(a,b) {
+    var aUuid = a.dataset.uuid
+    var bUuid = b.dataset.uuid
+    if(typeof(aUuid) === 'undefined' && typeof(bUuid) !== 'undefined') return 1
+    if(typeof(aUuid) !== 'undefined' && typeof(bUuid) === 'undefined') return -1
+    return 0
+  });
+  var firstRow = fileSlotArray.slice(0, 5);
+  var secondRow = fileSlotArray.slice(5, 10);
+  parent[0].children.forEach(function(element, index) {
+    parent[0].appendChild(firstRow[index])
+  });
+  parent[1].children.forEach(function(element, index) {
+    parent[1].appendChild(secondRow[index])
+  });
 }
 
 function createFileNameElement(availableSlot, fileList) {

@@ -24,7 +24,8 @@ import {
   replaceFile,
   addFileNotLoadedError,
   addErroMsg,
-  hideErrorMsg
+  hideErrorMsg,
+  sortList
 } from "helpers";
 export default class extends Controller {
   static targets = ["input"];
@@ -63,13 +64,13 @@ export default class extends Controller {
           replaceFile(this.dropZone.options.params[0])
           this.dropZone.options.params = [];
         }
-        if(this.listOfAcceptedFiles.length > 3) {
+        if(this.listOfAcceptedFiles.length > 10) {
           this.listOfRejectedFiles.push(file.name);
           addFileNotLoadedError(this.listOfRejectedFiles)
         }
         addFileToTheList(this.listOfAcceptedFiles, file.upload['uuid'])
       } else {
-        addErroMsg('Krivi format druze');
+        addErroMsg('Krivi format!');
       }
     });
 
@@ -93,6 +94,7 @@ export default class extends Controller {
           let fileToDelete = this.dropZone.getQueuedFiles().find(x => x.upload['uuid'] === elementUuid);
           if(fileToDelete !== undefined) this.dropZone.removeFile(fileToDelete)
           returnToInitial(et);
+          sortList();
         }
       });
     }
@@ -155,79 +157,6 @@ export default class extends Controller {
     this.data.fileToReplace = [];
     return this.data.fileToReplace;
   }
-}
-
-// class DirectUploadController {
-//   constructor(source, file) {
-//     this.directUpload = createDirectUpload(file, source.url, this);
-//     this.source = source;
-//     this.file = file;
-//   }
-
-  // start() {
-  //   this.file.controller = this;
-  //   this.hiddenInput = this.createHiddenInput();
-  //   this.directUpload.create((error, attributes) => {
-  //     if (error) {
-  //       removeElement(this.hiddenInput);
-  //       this.emitDropzoneError(error);
-  //     } else {
-  //       this.hiddenInput.value = attributes.signed_id;
-  //       this.emitDropzoneSuccess();
-  //     }
-  //   });
-  // }
-
-//   createHiddenInput() {
-//     const input = document.createElement("input");
-//     input.type = "hidden";
-//     input.name = this.source.inputTarget.name;
-//     insertAfter(input, this.source.inputTarget);
-//     return input;
-//   }
-
-//   directUploadWillStoreFileWithXHR(xhr) {
-//     this.bindProgressEvent(xhr);
-//     this.emitDropzoneUploading();
-//   }
-
-//   bindProgressEvent(xhr) {
-//     this.xhr = xhr;
-//     this.xhr.upload.addEventListener("progress", event =>
-//       this.uploadRequestDidProgress(event)
-//     );
-//   }
-
-//   uploadRequestDidProgress(event) {
-//     const element = this.source.element;
-//     const progress = (event.loaded / event.total) * 100;
-//     findElement(
-//       this.file.previewTemplate,
-//       ".dz-upload"
-//     ).style.width = `${progress}%`;
-//   }
-
-//   emitDropzoneUploading() {
-//     console.log('jesammm')
-//     this.file.status = Dropzone.UPLOADING;
-//     this.source.dropZone.emit("processing", this.file);
-//   }
-
-  // emitDropzoneError(error) {
-  //   this.file.status = Dropzone.ERROR;
-  //   this.source.dropZone.emit("error", this.file, error);
-  //   this.source.dropZone.emit("complete", this.file);
-  // }
-
-//   emitDropzoneSuccess() {
-//     this.file.status = Dropzone.SUCCESS;
-//     this.source.dropZone.emit("success", this.file);
-//     this.source.dropZone.emit("complete", this.file);
-//   }
-// }
-
-function createDirectUploadController(source, file) {
-  return new DirectUploadController(source, file);
 }
 
 function createDropZone(controller) {
