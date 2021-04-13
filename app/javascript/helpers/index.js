@@ -33,34 +33,27 @@ export function insertAfter(el, referenceNode) {
   return referenceNode.parentNode.insertBefore(el, referenceNode.nextSibling);
 }
 
-export function addFileToTheList(fileList) {
+export function addFileToTheList(fileList, uuid) {
   var availableSlots = document.querySelectorAll(".file-slot:not(.filed-file-slot)");
   var emptySlotImg = availableSlots[0].querySelector('.empty-slot-img');
   emptySlotImg.src = '/assets/full-slot.png'
   availableSlots[0].className += ' filed-file-slot'
+  availableSlots[0].setAttribute('data-uuid', uuid)
+  availableSlots[0].className = availableSlots[0].className.replace(/first/g, "");
+  availableSlots[1].className += ' first'
   createFileNameElement(availableSlots[0], fileList)
+  var availableSlots = document.querySelectorAll(".file-slot:not(.filed-file-slot)");
 }
 
 export function addStatusIcon(responseCode) {
-  var availableSlots = document.querySelectorAll(".filed-file-slot:not(.processed-file)");
+  var availableSlots = document.querySelectorAll(".filed-file-slot:not(.processed-file):not(.rejected-file)");
   var occupied_slot = availableSlots[0].querySelector('.empty-slot-img');
   if(responseCode === 200) {
     occupied_slot.src = '/assets/success-file.png';
     availableSlots[0].className += ' processed-file'
   } else {
-    occupied_slot.src = '/assets/rejected-file.png';
+    occupied_slot.src = '/assets/error.svg';
     availableSlots[0].className += ' rejected-file';
-  }
-}
-
-export function addWrongFormatError() {
-  var wrongFormatErrorElement =  document.getElementById('wrong-format-elem');
-  var errorDiv = document.getElementById('error-div')
-  if (typeof(wrongFormatErrorElement) === 'undefined' && wrongFormatErrorElement === null) {
-    var wrongFormatErrorMsg = document.createElement('p');
-    wrongFormatErrorMsg.innerHTML = 'Krivi format';
-    wrongFormatErrorMsg.id = 'wrong-format-elem'
-    errorDiv.appendChild(wrongFormatErrorMsg);
   }
 }
 
@@ -68,8 +61,55 @@ export function getFilenameExtension(filename) {
   return filename.substring(filename.lastIndexOf('.')+1, filename.length) || filename;
 }
 
+export function returnToInitial(element) {
+  element.classList.remove('filed-file-slot');
+  element.querySelector('.empty-slot-img').src = '/assets/empty-slot.png'
+  element.querySelector('.element-name').remove();
+  var availableSlots = document.querySelectorAll(".file-slot:not(.filed-file-slot)");
+  for(let availableSlot of availableSlots) {
+    availableSlot.className = availableSlot.className.replace(/first/g, "");
+  }
+  availableSlots[0].className += ' first'
+}
+
+export function disableSendBtnIfNoFile(uploadedFile, submitBtn) {
+  if(uploadedFile.length === 0) {
+    submitBtn.classList.remove('enabled-btn')
+    submitBtn.disabled = false;
+  }
+}
+
+export function addFileNotLoadedError(rejectedFiles) {
+  var fullContainerErrorMsg = document.getElementById('error-container2');
+  var errorMsg = rejectedFiles.join(', ').replace(/, ([^,]*)$/, ' i $1');
+  var errorElement = fullContainerErrorMsg.querySelector('.error-msg')
+  errorElement.innerHTML = errorMsg + ' nisu ucitani u ovaj sesiji'
+  fullContainerErrorMsg.style.display = 'inline-flex'
+}
+
+export function replaceFile(indexOfFile) {
+  var slotToReplace = document.querySelectorAll(".file-slot")[indexOfFile];
+  var nameOfRejectedFile = slotToReplace.querySelector('.element-name');
+  slotToReplace.className = ''
+  slotToReplace.className += 'file-slot'
+  nameOfRejectedFile.remove();
+}
+
+export function addErroMsg(msg) {
+  var errorDiv = document.getElementById('error-container')
+  errorDiv.style.display = 'inline-flex';
+  var errorMsg = errorDiv.querySelector('.error-msg');
+  errorMsg.innerHTML = msg
+}
+
+export function hideErrorMsg() {
+  document.getElementById('error-container').style.display = 'none';
+  document.getElementById('error-container2').style.display = 'none';;
+}
+
 function createFileNameElement(availableSlot, fileList) {
   var fileDisplayEl = document.createElement('p');
   fileDisplayEl.innerHTML = fileList[fileList.length - 1];
+  fileDisplayEl.className = 'element-name'
   availableSlot.appendChild(fileDisplayEl);
 }

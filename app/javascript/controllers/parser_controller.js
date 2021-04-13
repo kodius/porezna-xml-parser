@@ -17,10 +17,14 @@ import {
   removeElement,
   insertAfter,
   addFileToTheList,
-  addWrongFormatError,
   getFilenameExtension,
-  addStatusIcon
-
+  addStatusIcon,
+  returnToInitial,
+  disableSendBtnIfNoFile,
+  replaceFile,
+  addFileNotLoadedError,
+  addErroMsg,
+  hideErrorMsg
 } from "helpers";
 export default class extends Controller {
   static targets = ["input"];
@@ -28,7 +32,10 @@ export default class extends Controller {
   connect() {
     this.sendBtn = document.getElementById('submit-button');
     this.removeFileBtn = document.querySelectorAll('.remove-icon-span')
+    this.addNewBtn = document.querySelectorAll('.add-icon-span');
+    this.replaceBtn = document.querySelectorAll('.replace-icon-span');
     this.listOfAcceptedFiles = [];
+    this.listOfRejectedFiles = [];
     this.filedSlots = document.querySelectorAll('filed-file-slot')
     this.dropZone = createDropZone(this);
     this.hideFileInput();
@@ -45,20 +52,29 @@ export default class extends Controller {
 
   bindEvents() {
     this.dropZone.on("addedfile", file => {
-      let fileExtenstion = getFilenameExtension(file.name)
+      let fileExtenstion = getFilenameExtension(file.name);
       if(fileExtenstion === 'xml') {
         this.listOfAcceptedFiles.push(file.name);
-        this.sendBtn.classList += ' enabled-btn'
-        this.sendBtn.disabled = false;
-        addFileToTheList(this.listOfAcceptedFiles)
+        if(this.listOfAcceptedFiles.length === 1) {
+          this.sendBtn.classList += ' enabled-btn'
+          this.sendBtn.disabled = false;
+        }
+        if(this.dropZone.options !== undefined && this.dropZone.options.params.length > 0) {
+          replaceFile(this.dropZone.options.params[0])
+          this.dropZone.options.params = [];
+        }
+        if(this.listOfAcceptedFiles.length > 3) {
+          this.listOfRejectedFiles.push(file.name);
+          addFileNotLoadedError(this.listOfRejectedFiles)
+        }
+        addFileToTheList(this.listOfAcceptedFiles, file.upload['uuid'])
       } else {
-        addWrongFormatError();
+        addErroMsg('Krivi format druze');
       }
     });
 
     this.dropZone.on("removedfile", file => {
-      console.log('jesam')
-      file.controller && removeElement(file.controller.hiddenInput);
+      disableSendBtnIfNoFile(this.dropZone.getAcceptedFiles(),  this.sendBtn);
     });
 
     this.dropZone.on("canceled", file => {
@@ -66,35 +82,49 @@ export default class extends Controller {
     });
 
     for(let remove of this.removeFileBtn) {
-      if(remove === undefined)  {
-        return;
-      }
+      if(remove === undefined) return;
+
+      remove.addEventListener('click', (e) => {
+        const et = e.target.parentElement.parentElement;
+        let elementUuid = et.dataset['uuid'];
+        var numberOfRejectedFile = document.querySelectorAll('.rejected-file').length;
+        if(numberOfRejectedFile === 1) document.getElementById('error-container').style.display = 'none';
+        if(elementUuid !== undefined) {
+          let fileToDelete = this.dropZone.getQueuedFiles().find(x => x.upload['uuid'] === elementUuid);
+          if(fileToDelete !== undefined) this.dropZone.removeFile(fileToDelete)
+          returnToInitial(et);
+        }
+      });
     }
-    // this.dropZone.on('drop', (file, event) => {
-    //   debugger;
-    // });
 
-    // this.dropZone.on('error', (file, message, xhr) => {
-    //   debugger;
-    //   addWrongFormatError()
-    // });
+    this.sendBtn.addEventListener('click', function() {
+      this.listOfAcceptedFiles = [];
+      this.listOfRejectedFiles = [];
+      this.sendBtn.classList.remove('enabled-btn');
+      hideErrorMsg();
+    }.bind(this), false);
 
+    for(let newBtn of this.addNewBtn) {
+      newBtn.addEventListener('click', function() {
+        document.getElementById('upload-zone').click();
+      });
+    }
 
-    // this.dropZone.on('sending', function(file, xhr, formData){
-    //   debugger;
-    //   formData.append('userName', 'bob');
-    // });
+    for(let [index,replaceBtn] of this.replaceBtn.entries()) {
+      replaceBtn.addEventListener('click', function() {
+        this.dropZone.options.params.push(index)
+        document.getElementById('upload-zone').click();
+      }.bind(this), false);
+    }
 
     this.dropZone.on("success", function(file, response) {
-      console.log(response)
-      console.log(response['status'])
       if(response['status'] === 200) {
         window.location.href = '/download-xml?filename='+response["filename"];
+      } else {
+        addErroMsg('Datoteke nisu u odgovarajucem formatu')
       }
       addStatusIcon(response['status'])
     });
-
-    this
 }
 
   get headers() {
@@ -121,14 +151,9 @@ export default class extends Controller {
     return this.data.get("addRemoveLinks") || true;
   }
 
-  get listOfUploadFiles() {
-    this.data.listOfUploadFiles = []
-    return this.data.listOfUploadFiles;
-  }
-
-  get listOfUploadFiles() {
-    this.data.listOfUploadFiles = []
-    return this.data.listOfUploadFiles;
+  get fileToReplace() {
+    this.data.fileToReplace = [];
+    return this.data.fileToReplace;
   }
 }
 
@@ -212,12 +237,11 @@ function createDropZone(controller) {
     uploadMultiple: true,
     parallelUploads: 1,
     maxFilesize: controller.maxFileSize,
-    params: controller.listOfUploadFiles,
     addRemoveLinks: true,
     autoProcessQueue: false,
     acceptedFiles: '.xml',
     previewsContainer: false,
-    params: controller.listOfUploadFiles,
+    params: controller.fileToReplace,
     init: function() {
         var myDropzone = this;
         document.getElementById('file-upload-form').addEventListener("submit", function (e) {
@@ -230,7 +254,7 @@ function createDropZone(controller) {
               myDropzone.getQueuedFiles().forEach(function(file,index) {
                 setTimeout(function() {
                   myDropzone.processQueue(file)
-                }, 5000*(index+1))
+                }, 1000*(index+1))
               });
             }
         });
