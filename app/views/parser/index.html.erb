@@ -11,28 +11,47 @@
     <div class='submit-btn'>
       <%= submit_tag 'Obradi datoteke', id:'submit-button', class: 'disabled-btn', disabled: true %>
     </div>
+    <div id='error-container'>
+      <%= image_tag 'usklicnik-icon.svg', class: 'error-icon' %>
+      <p class='error-msg'> Datoteke nisu u odgovarajucem formatu</p>
+    </div>
+    <div></div>
+    <div id='error-container2'>
+      <%= image_tag 'usklicnik-icon.svg', class: 'error-icon' %>
+      <p class='error-msg'></span>
+    </div>
   <% end %>
 </div>
 
 <div id='file-list-display'>
   <div class='slots-row'>
-    <div class='file-slot' data-dz-remove>
+    <div class='file-slot first'>
+      <span class='add-icon-span'><%= image_tag 'add-new-icon.png' %></span>
+      <span class='replace-icon-span'><%= image_tag 'replace-icon.png' %></span>
       <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
       <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
     </div>
     <div class='file-slot'>
+      <span class='add-icon-span'><%= image_tag 'add-new-icon.png' %></span>
+      <span class='replace-icon-span'><%= image_tag 'replace-icon.png' %></span>
       <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
       <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
     </div>
     <div class='file-slot'>
+      <span class='add-icon-span'><%= image_tag 'add-new-icon.png' %></span>
+      <span class='replace-icon-span'><%= image_tag 'replace-icon.png' %></span>
       <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
       <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
     </div>
     <div class='file-slot'>
+      <span class='add-icon-span'><%= image_tag 'add-new-icon.png' %></span>
+      <span class='replace-icon-span'><%= image_tag 'replace-icon.png' %></span>
       <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
       <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
     </div>
     <div class='file-slot'>
+      <span class='add-icon-span'><%= image_tag 'add-new-icon.png' %></span>
+      <span class='replace-icon-span'><%= image_tag 'replace-icon.png' %></span>
       <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
       <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
     </div>
@@ -40,22 +59,32 @@
   <div class='slots-row'>
     <div class='slots-row'>
       <div class='file-slot'>
+        <span class='add-icon-span'><%= image_tag 'add-new-icon.png' %></span>
+        <span class='replace-icon-span'><%= image_tag 'replace-icon.png' %></span>
         <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
         <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
       </div>
       <div class='file-slot'>
+        <span class='add-icon-span'><%= image_tag 'add-new-icon.png' %></span>
+        <span class='replace-icon-span'><%= image_tag 'replace-icon.png' %></span>
         <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
         <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
       </div>
       <div class='file-slot'>
+        <span class='add-icon-span'><%= image_tag 'add-new-icon.png' %></span>
+        <span class='replace-icon-span'><%= image_tag 'replace-icon.png' %></span>
         <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
         <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
       </div>
       <div class='file-slot'>
+        <span class='add-icon-span'><%= image_tag 'add-new-icon.png' %></span>
+        <span class='replace-icon-span'><%= image_tag 'replace-icon.png' %></span>
         <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
         <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
       </div>
       <div class='file-slot'>
+        <span class='add-icon-span'><%= image_tag 'add-new-icon.png' %></span>
+        <span class='replace-icon-span'><%= image_tag 'replace-icon.png' %></span>
         <span class='remove-icon-span'><%= image_tag 'remove-file-icon.png' %></span>
         <%= image_tag 'empty-slot.png', class: 'empty-slot-img' %>
       </div>
