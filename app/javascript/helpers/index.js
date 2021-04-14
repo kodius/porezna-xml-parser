@@ -119,8 +119,8 @@ export function sortList() {
     if(typeof(aUuid) !== 'undefined' && typeof(bUuid) === 'undefined') return -1
     return 0
   });
-  var firstRow = fileSlotArray.slice(0, 5);
-  var secondRow = fileSlotArray.slice(5, 10);
+  var firstRow = fileSlotArray.slice(0, 6);
+  var secondRow = fileSlotArray.slice(6, 10);
   parent[0].children.forEach(function(element, index) {
     parent[0].appendChild(firstRow[index])
   });
