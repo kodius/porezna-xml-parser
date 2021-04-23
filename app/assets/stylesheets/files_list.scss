@@ -1,0 +1,96 @@
+#file-list-display {
+   margin-top: 57px;
+ }
+ 
+ .slots-row {
+   display: flex;
+   justify-content: center;
+ }
+ 
+ .remove-icon-span,
+ .add-icon-span,
+ .replace-icon-span {
+   display: none;
+ }
+ 
+ .first:hover > .add-icon-span {
+   position: absolute;
+   top: 2px;
+   right: 10px;
+   z-index: 100;
+   display: inline;
+   padding: 0;
+ }
+ 
+ .file-slot {
+   width: 102px;
+   height: 123px;
+   margin-right: 2px;
+   text-align: center;
+   white-space: nowrap;
+   box-sizing: content-box;
+   position: relative;
+   img {
+     display: inline-block;
+     vertical-align: middle;
+     padding-top: 40%;
+   }
+ }
+ 
+ .filed-file-slot:hover {
+   background: #F3F3F3;
+   border-radius: 10px;
+   // opacity: 0.4;
+   .remove-icon-span {
+     position: absolute;
+     top: 2px;
+     right: 10px;
+     z-index: 100;
+     display: inline;
+     padding: 0;
+   }
+ }
+ 
+ .first:hover {
+   background: #F3F3F3;
+   border-radius: 10px;
+   .empty-slot-img {
+     width: 35px;
+     height: auto;
+   }
+ }
+ 
+ .rejected-file:hover > .replace-icon-span {
+   position: absolute;
+   top: 2px;
+   right: 25px;
+   z-index: 100;
+   display: inline;
+   padding: 0;
+ }
+ 
+ #error-container, #error-container2 {
+   margin-top: 10px;
+   max-width: 350px;
+   text-align: left;
+   margin: 10px auto 0 auto;
+   display: none;
+ }
+ 
+ .error-msg {
+   font-family: 'MuseoSans300';
+   font-size: 14px;
+   letter-spacing: 0px;
+   color: #EA3D53;
+   opacity: 1;
+   font-weight: bold;
+   margin: 8px;
+   margin: 8px 0 0 8px;
+ }
+ 
+ .error-icon {
+   width: 16.5px;
+   height: auto;
+   vertical-align: middle;
+   margin: 8px 0 0 0;
+ }

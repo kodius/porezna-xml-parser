@@ -8,8 +8,28 @@
         </div>
     </label>
   </div>
-  <div class='submit-btn'>
-      <%= submit_tag 'Submit', id:'submit-button' %>
-  </div>
-  <div id='file-list-display'></div>
+    <div class='submit-btn'>
+      <%= submit_tag 'Obradi datoteke', id:'submit-button', class: 'disabled-btn', disabled: true %>
+    </div>
 <% end %>
+<div id='file-list-display'>
+  <div class='slots-row'>
+    <div class='file-slot first'>
+      <span class='add-icon-span'><%= image_tag 'add-new-icon.svg' %></span>
+      <%= image_tag 'empty-slot.svg', class: 'empty-slot-img' %>
+    </div>
+    <div class='file-slot'>
+      <span class='remove-icon-span'><%= image_tag 'remove-file-icon.svg' %></span>
+      <%= image_tag 'full-slot.svg', class: 'empty-slot-img' %>
+    </div>
+    <div class='file-slot'>
+      <span class='remove-icon-span'><%= image_tag 'remove-file-icon.svg' %></span>
+      <%= image_tag 'success-file.svg', class: 'empty-slot-img' %>
+    </div>
+    <div class='file-slot'>
+      <span class='replace-icon-span'><%= image_tag 'replace-icon.svg' %></span>
+      <span class='remove-icon-span'><%= image_tag 'remove-file-icon.svg' %></span>
+      <%= image_tag 'error-file.svg', class: 'empty-slot-img' %>
+    </div>
+  </div>
+</div>

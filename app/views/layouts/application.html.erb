@@ -51,6 +51,11 @@ function ekUpload(){
     function fileSelectHandler(fileList, e) {
       // Fetch FileList object
       var files = e.target.files || e.dataTransfer.files;
+      if(files.length > 0) {
+        var submitButton  = document.getElementById('submit-button');
+        submitButton.disabled = false;
+        submitButton.classList.add('enabled-btn')
+      }
       // Cancel event and hover styling
       fileDragHover(e);
 
