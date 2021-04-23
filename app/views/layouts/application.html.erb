@@ -24,9 +24,13 @@ function ekUpload(){
       var fileSelect    = document.getElementById('file-upload'),
           fileDrag      = document.getElementById('file-drag'),
           submitButton  = document.getElementById('submit-button');
-          fileListDisplay = document.getElementById('file-list-display');
+          fileListDisplay = document.getElementById('file-list-display'),
+          removeFile = document.getElementById('remove-icon-span'),
+          fullSlot = document.getElementById('full');
+          emptySlot = document.getElementById('empty');
 
       fileSelect.addEventListener('change', fileSelectHandler.bind(null, fileList), false);
+      removeFile.addEventListener('click', removeFileHandler.bind(null, fileSelect, submitButton, fullSlot, emptySlot), false)
 
       // Is XHR2 available?
       var xhr = new XMLHttpRequest();
@@ -48,13 +52,24 @@ function ekUpload(){
       fileDrag.className = (e.type === 'dragover' ? 'hover' : 'modal-body file-upload');
     }
 
+    function removeFileHandler(fileSelect, submitButton, full, empty) {
+      fileSelect.value = [];
+      submitButton.disabled = true;
+      submitButton.classList.remove('enabled-btn');
+      document.getElementsByClassName('element-name')[0].remove();
+      toggleElement(full, 'none');
+      toggleElement(empty, 'block');
+
+    }
+
     function fileSelectHandler(fileList, e) {
       // Fetch FileList object
       var files = e.target.files || e.dataTransfer.files;
       if(files.length > 0) {
         var submitButton  = document.getElementById('submit-button');
         submitButton.disabled = false;
-        submitButton.classList.add('enabled-btn')
+        submitButton.classList.add('enabled-btn');
+        addFileToTheList(files[0].name)
       }
       // Cancel event and hover styling
       fileDragHover(e);
@@ -65,7 +80,6 @@ function ekUpload(){
         parseFile(files[i]);
          // uploadFile(f);
       }
-      renderFileList(fileList);
     }
 
     // Output
@@ -149,17 +163,32 @@ function ekUpload(){
       }
     }
 
-    function renderFileList(fileList) {
-      fileListDisplay.innerHTML = '';
-      fileList.forEach(function (file, index) {
-        var fileDisplayEl = document.createElement('p');
-        fileDisplayEl.innerHTML = (index + 1) + ': ' + file.name;
-        fileListDisplay.appendChild(fileDisplayEl);
-      });
-    };
+    // function renderFileList(fileList) {
+    //   fileListDisplay.innerHTML = '';
+    //   fileList.forEach(function (file, index) {
+    //     var fileDisplayEl = document.createElement('p');
+    //     fileDisplayEl.innerHTML = (index + 1) + ': ' + file.name;
+    //     fileListDisplay.appendChild(fileDisplayEl);
+    //   });
+    // };
 
-    function pushToFileList() {
+    function addFileToTheList(fileName) {
+      var fullSlot = document.getElementById('full');
+      var emptySlot = document.getElementById('empty');
+      toggleElement(fullSlot, 'block');
+      toggleElement(emptySlot, 'none');
+      createFileNameElement(fileName,fullSlot);
+    }
 
+    function toggleElement(element, status) {
+      element.style.display = status;
+    }
+
+    function createFileNameElement(fileName, slot) {
+      var fileDisplayEl = document.createElement('p');
+      fileDisplayEl.innerHTML = fileName;
+      fileDisplayEl.className = 'element-name'
+      slot.appendChild(fileDisplayEl);
     }
 
     // Check for the various File API support.
