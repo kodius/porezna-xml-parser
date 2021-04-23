@@ -1,17 +1,13 @@
 <%=form_tag('/upload-xml', method: 'post', multipart: true, class: 'uploader', id: 'file-upload-form') do %>
-  <input id="file-upload" type="file" name="fileUpload" multiple />
-  <label for="file-upload" id="file-drag">
-    <div id="start">
-      <i class="fa fa-download" aria-hidden="true"></i>
-      <div>Select a file or drag here</div>
-      <div id="notimage" class="hidden"></div>
-    </div>
-    <div id="response" class="hidden">
-      <progress class="progress" id="file-progress" value="0">
-        <span>0</span>%
-      </progress>
-    </div>
-  </label>
+  <input id="file-upload" type="file" name="fileUpload" />
+  <div id='upload-zone'>
+    <label for="file-upload" id="file-drag">
+        <div class="dropzone-msg">
+          <div class='cloud-icon-wrapper'><%= image_tag 'cloud-icon.svg', class: 'cloud-icon' %></div>
+          <p class='dropzone-msg'>Dovucite datoteku ili <span>Odaberite</span></p>
+        </div>
+    </label>
+  </div>
   <div class='submit-btn'>
       <%= submit_tag 'Submit', id:'submit-button' %>
   </div>
