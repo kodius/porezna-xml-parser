@@ -5,6 +5,8 @@ ruby "2.7.1"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 6.0.3", ">= 6.0.3.4"
+gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'
+
 # Use postgresql as the database for Active Record
 # Use Puma as the app server
 gem "puma", "~> 4.1"
