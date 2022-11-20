@@ -8,12 +8,14 @@ class NokogiriServices
 
    def self.detach_racun_data(data)
      arr = []
-     data.map do |k|
-       h = {}
-       k.children.map do |v|
-         h.merge!(v.name => v.children.to_s) if v.class.name == 'Nokogiri::XML::Element'
+     data.map do |kita|
+       hash = {}
+       kita.children.map do |value|
+        next if value.name === 'R3' && !Date.parsable?(value.children.to_s)
+
+        hash.merge!(value.name => value.children.to_s) if value.class.name == 'Nokogiri::XML::Element'
        end
-       arr << h
+       arr << hash
      end
      ApplicationHelper.generete_data_for_parsed_file(arr)
    end
@@ -27,4 +29,15 @@ class NokogiriServices
      end
      @doc
    end
+end
+
+class Date
+  def self.parsable?(string)
+    begin
+      parse(string)
+      true
+    rescue ArgumentError
+      false
+    end
+  end
 end
