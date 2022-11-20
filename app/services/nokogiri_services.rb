@@ -8,9 +8,9 @@ class NokogiriServices
 
    def self.detach_racun_data(data)
      arr = []
-     data.map do |kita|
+     data.map do |inf|
        hash = {}
-       kita.children.map do |value|
+       inf.children.map do |value|
         next if value.name === 'R3' && !Date.parsable?(value.children.to_s)
 
         hash.merge!(value.name => value.children.to_s) if value.class.name == 'Nokogiri::XML::Element'
