@@ -13,6 +13,10 @@ class NokogiriServices
     @obrazac[0].attributes['verzijaSheme'].value = '2.0'
     root['xsi:schemaLocation'] = 'http://e-porezna.porezna-uprava.hr/sheme/zahtjevi/ObrazacURA/v2-0 ObrazacURA-v2-0.xsd'
     @doc.root.remove_attribute('schemaLocation')
+    @metapodaci = @doc.search('Metapodaci')
+    @metapodaci[0].set_attribute('xmlns', 'http://e-porezna.porezna-uprava.hr/sheme/Metapodaci/v2-0')
+    @uskladjenost = @doc.search('Uskladjenost')
+    @uskladjenost[0].content = 'ObrazacURA-v2-0'
     arr = detach_racun_data(@r_elements)
     finish_xml_parsing(arr)
   end
